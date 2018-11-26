@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <script type="text/javascript" src="./static/js/jquery.js"></script>
+    <script type="text/javascript" src="./static/js/md5.min.js"></script>
+    <link rel="stylesheet" href="./static/css/bootstrap.min.css">
+    <link rel="stylesheet" href="./static/css/font-awesome.min.css">
+</head>
+<body>
+<!-- menu -->
+<div class="menu">
+<div class="brand">
+<img src="./static/images/minQ_brand.png" alt="minQ">
+<br>
+<span class="brandword">有道minQ</span>
+</div>
+<ul>
+	<li>
+        <a href="./dict.html">
+            <span><i class="icon-refresh"></i> 词典</span>
+        </a>
+    </li>
+    <li>
+		<span><i class="icon-copy"></i> 翻译</span>
+    </li>
+    <li>
+		<span><i class=" icon-file-alt"></i> 单词本</span>
+	</li>
+	<li>
+		<span><i class="icon-folder-open-alt"></i> 文档翻译</span>
+	</li>
+</ul>
+<hr>
+<ul>
+    <li>
+        <span><i class="icon-film"></i> 精品课</span>
+    </li>
+    <li>
+        <span><i class="icon-user"></i> 人工翻译</span>
+    </li>
+</ul>
+<div class="form">
+    <form>
+        <input class="checkbox" type="checkbox">取词
+        <br>
+        <input class="checkbox" type="checkbox">划词 
+    </form>
+</div>
+</div>
+<!-- content -->
+<div class="content">
+    <div class="flexFirst">
+        <div class="chooselang">
+            <select class="select" name="select" id="select">
+                <option value="auto">自动检测语言</option>
+                <option selected="selected" value="entoch">英语 >> 中文</option>
+                <option value="chtoen">中文 >> 英语</option>
+    
+                <option value="chtoja">中文 >> 日语</option>
+                <option value="chtoko">中文 >> 韩语</option>
+                <option value="chtofr">中文 >> 法语</option>
+                <option value="chtode">中文 >> 德语</option>
+                <option value="chtoru">中文 >> 俄语</option>
+                <option value="chtoes">中文 >> 西班牙语</option>
+                <option value="chtopt">中文 >> 葡萄牙语</option>
+                <option value="chtovi">中文 >> 越南语</option>
+                <option value="chtoid">中文 >> 印尼语</option>
+                <option value="chtoar">中文 >> 阿拉伯语</option>
+            </select>
+        </div>
+        <div class="input">
+            <textarea name="query" id="query" class="query" placeholder="请输入您要查询的句子..."></textarea>
+        </div>
+        <div id="qquery" class="translate_btn"><button>查询</button></div>
+        <div class="translation">
+            <textarea name="translate" id="translate" class="translate"></textarea>
+        </div>
+    </div>
+</div>
+</body>
+<!-- js -->
+<script>
+$(function(){
+    var from = "auto";
+    var to = "zh-CHS";
+    $("#query").keyup(function(){
+        translate();
+    });
+    $("#qquery").click(function(){
+        translate();
+    });
+    function translate(){
+        var q = $("#query").val()
+        q = q.replace(/\n/g, ' ')
+        if(q){
+            language()
+            var secretKey = "8z6MGtGsyVoervF5Fk3yET4xsNOqgjet"
+            var appKey = "2ba19d7e3ed057cf"
+            var salt = "8520"
+            var sign = md5(appKey+q+salt+secretKey)
+            var ext = "mp3"
+            var voice = 0
+
+            var url = "http://openapi.youdao.com/api"
+            var params = "?q="+q+"&from="+from+"&to="+to+"&appKey="+appKey+"&salt="+salt+"&sign="+sign+"&ext="+ext+"&voice="+voice
+            var minQ = url+params
+
+            $.get(minQ, function(data) {
+                console.log(data);
+                $("#translate").val("");
+                $("#translate").val(data.translation);
+            }, 'jsonp');
+        }
+        else{
+            $("#translate").val("");
+        }
+    };
+    function language(){
+        var current_value = $("#select").val()
+        switch(current_value)
+        {
+            case "chtoen":
+                from = "zh-CHS";
+                to = "EN";
+                break;
+            case "entoch":
+                from = "EN";
+                to = "zh-CHS";
+                break;
+            case "chtoja":
+                from = "zh-CHS";
+                to = "ja";
+                break;
+            case "chtoko":
+                from = "zh-CHS";
+                to = "ko";
+                break;
+            case "chtofr":
+                from = "zh-CHS";
+                to = "fr";
+                break;
+            case "chtode":
+                from = "zh-CHS";
+                to = "de";
+                break;
+            case "chtoru":
+                from = "zh-CHS";
+                to = "ru";
+                break;
+            case "chtoes":
+                from = "zh-CHS";
+                to = "es";
+                break;
+            case "chtopt":
+                from = "zh-CHS";
+                to = "pt";
+                break;
+            case "chtovi":
+                from = "zh-CHS";
+                to = "vi";
+                break;
+            case "chtoid":
+                from = "zh-CHS";
+                to = "id";
+                break;
+            case "chtoar":
+                from = "zh-CHS";
+                to = "ar";
+                break;
+            default:
+                from = "auto";
+                to = "zh-CHS";
+        }
+    }
+});
+</script>
+<!-- ########################################################## -->
+<!-- css -->
+<style type="text/css">
+/* menu */
+.menu{
+	position: absolute;
+	left: 0;
+	bottom: 0;
+    z-index: 3;
+	width: 140px;
+	height: 100%;
+	background-color: #eceff1;
+}
+.menu .brand{
+    margin-top: 17px;
+}
+.menu .brand img{
+    width: 40px;
+    margin-left: 47px;
+    border-radius: 5px;
+}
+.menu .brand .brandword{
+    margin-left: 30px;
+    font-size: 16px;
+    color: #212121;
+}
+.menu ul{
+    padding: 0%;
+    margin: 0%;
+    margin-top: 10px;
+}
+.menu ul a{
+    text-decoration: none;
+}
+.menu ul li{
+    margin-top: 0;
+    list-style: none;
+    padding: 4px 0;
+}
+.menu ul li span{
+    margin-left: 30px;
+    font-size: 14px;
+    color: #616161; 
+}
+.menu ul li:hover{
+    background-color: #ef5350;
+}
+.menu ul li:hover span{
+    color: #ffffff;
+}
+.menu hr{
+    margin: 20px 25px;
+    border: 0.5px solid #b0bec5;
+}
+.menu form{
+    position: fixed;
+    left: 26px;
+    bottom: 20px;
+    font-size: 16px;
+    color: #424242;
+}
+.menu .checkbox{
+    color: #666666;
+}
+/* content */
+.content{
+    margin-left: 140px;
+    padding: 7px;
+}
+.chooselang{
+    padding: 5px 0px;
+}
+.chooselang .select{
+    height: 26px;
+    outline: none;
+    border: none;
+}
+.translate_btn{
+    overflow: hidden;
+    margin-top: 10px;
+}
+.translate_btn button{
+    float: right;
+    width: 72px;
+    height: 27px;
+    border: none;
+    outline: none;
+    border-radius: 2px;
+    color: #ffffff;
+    background-color: #f44336;
+}
+html,body,.content,.flexFirst{
+    height: 98%;
+}
+.input{
+    margin-top: 20px;
+    height: 40%;
+}
+.translation{
+    margin-top: 10px;
+    height: 42%;
+}
+.input .query,.translation .translate{
+    padding: 15px 10px;
+    outline: none;
+    border: none;
+    width: 100%;
+    height: 100%;
+    font-size: 18px;
+    resize: none;
+    overflow:auto;
+    background-color: #eceff1;
+}
+.translation .translate::-webkit-scrollbar{
+    width: 0 !important 
+}
+</style>
+</html>
