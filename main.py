@@ -4,9 +4,7 @@
 from PyQt5.QtCore import *
 from PyQt5.QtWidgets import *
 from PyQt5.QtWebEngineWidgets import *
-# from PyQt5.QtWidgets import QWidget, QVBoxLayout, QPushButton, QTextEdit
-# from FramelessWindow import FramelessWindow
-# from PyQt5.Qt import Qt
+
 import sys
 
 class MainWindow(QMainWindow):
@@ -22,7 +20,8 @@ class MainWindow(QMainWindow):
 		self.center()
 
 		self.page = QWebEngineView(self)
-		url = 'file:///home/chen/PycharmProjects/youdao/dict.html'
+		url = "file://"+sys.path[0]+'/dict.html'
+		print(url)
 		self.page.load(QUrl(url))
 		self.setCentralWidget(self.page)
 

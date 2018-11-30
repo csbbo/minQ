@@ -4,14 +4,16 @@
     <meta charset="UTF-8">
     <script type="text/javascript" src="./static/js/jquery.js"></script>
     <script type="text/javascript" src="./static/js/md5.min.js"></script>
+    <script type="text/javascript" src="./static/js/dict.js"></script>
     <link rel="stylesheet" href="./static/css/bootstrap.min.css">
     <link rel="stylesheet" href="./static/css/font-awesome.min.css">
+    <link rel="stylesheet" href="./static/css/dict.css">
 </head>
 <body>
 <!-- menu -->
 <div class="menu">
 <div class="brand">
-<img src="./static/images/minQ_brand.png" alt="minQ">
+<img id="minq" src="./static/images/minQ_brand.png" alt="minQ">
 <br>
 <span class="brandword">有道minQ</span>
 </div>
@@ -81,10 +83,10 @@
             <span id="qquery" class="tword">love</span> 
             <div class="voice">
                 英 [<span id="uk-phonetic" class="eword"></span>]
-                <i class="icon-volume-up"></i>
+                <i id="espeak" class="volume icon-volume-up"></i>
                 <span class="voidspace"></span>
                 美 [<span id="us-phonetic" class="aword"></span>]  
-                <i class="icon-volume-up"></i>
+                <i id="uspeak" class="volume icon-volume-up"></i>
             </div>
         </div>
         <div class="basetranslate">
@@ -94,14 +96,14 @@
         </div>
         <hr>
         <div class="phrase">
-            短语
+            <span class="have">短语</span>
             <ul id="web">
                 <!--  -->
             </ul>
         </div>
         <hr>
         <div class="tense">
-            时态
+            <span class="have">时态</span>
             <ul id="wfs">
                 <!--  -->
             </ul>
@@ -110,9 +112,13 @@
     <div id="translation"></div>
     <div id="hidden" class="hidden">
         <div class="sentence">
-            <span class="ensentence">And so even though we face the difficulties of today and tomorrow, I still have a dream. It is a dream deeply rooted in the American dream.</span>
-            <br>
-            <span class="chsentence">今天，我高兴地同大家一起参加这次将成为我国历史上为争取自由而举行的最伟大的示威集会。</span>
+            <span style="color:#2196f3">词霸每日一句</span>
+            <br><br>
+            <span id="ensentence" class="ensentence">And so even though we face the difficulties of today and tomorrow, I still have a dream. It is a dream deeply rooted in the American dream.</span>
+            <br><br>
+            <span id="chsentence" class="chsentence">今天，我高兴地同大家一起参加这次将成为我国历史上为争取自由而举行的最伟大的示威集会。</span>
+            <br><br>
+            <span id="prettynote"></span>
         </div>
         <div class="contentimg">
             <img class="backgroundimg" src="./static/images/background.jpg" alt="background">
@@ -120,316 +126,4 @@
     </div>
 </div>
 </body>
-<!-- ########################################################### -->
-<!-- js -->
-<script>
-$(function(){
-    var from = "auto";
-    var to = "zh-CHS";
-    $("#query").keyup(function(){
-        translate();
-    });
-    $("#querybtn").click(function(){
-        translate();
-    });
-    function translate(){
-        var q = $("#query").val()
-        if(q){
-        if(q.length<20){
-            language()
-            var secretKey = "8z6MGtGsyVoervF5Fk3yET4xsNOqgjet"
-            var appKey = "2ba19d7e3ed057cf"
-            var salt = "8520"
-            var sign = md5(appKey+q+salt+secretKey)
-            var ext = "mp3"
-            var voice = 0
-
-            var url = "http://openapi.youdao.com/api"
-            var params = "?q="+q+"&from="+from+"&to="+to+"&appKey="+appKey+"&salt="+salt+"&sign="+sign+"&ext="+ext+"&voice="+voice
-            var minQ = url+params
-
-            $.get(minQ, function(data) {
-                console.log(data);
-                cleandata();
-                if($("#select").val() === "entoch"){
-                $("#qquery").text(data.query);
-                for (i=0;i<data.basic["explains"].length;i++){
-                    $("#uk-phonetic").text(data.basic["uk-phonetic"]);
-                    $("#us-phonetic").text(data.basic["us-phonetic"]);
-                    $("#explains").append("<li>")
-                    $("#explains").append(data.basic['explains'][i])
-                    $("#explains").append("</li>")
-                }
-                for (j=0;j<data.basic["wfs"].length;j++){
-                    $("#wfs").append("<li>")
-                    $("#wfs").append(data.basic["wfs"][j]["wf"]["name"])
-                    $("#wfs").append(" ")
-                    $("#wfs").append(data.basic["wfs"][j]["wf"]["value"])
-                    $("#wfs").append("</li>")
-                }
-                for (k=0;k<data.web.length;k++){
-                    $("#web").append("<li>")
-                    $("#web").append(data.web[k]["key"])
-                    $("#web").append(" ")
-                    $("#web").append(data.web[k]["value"])
-                    $("#web").append("</li>")
-                }
-                }else{
-                    $("#translate").hide()
-                    $("#translation").text(data.translation);
-                }
-            }, 'jsonp');
-           
-            $("#hidden").hide()
-            $("#translate").show()
-        }else{alert("请使用翻译功能翻译句子")}
-        }else{
-            $("#hidden").show()
-            $("#translate").hide()
-            $("#translate").hide()
-        }
-    };
-    function cleandata(){
-        $("#qquery").text(" ");
-        $("#uk-phonetic").text(" ");
-        $("#us-phonetic").text(" ");
-        $("#explains").text("")
-        $("#wfs").text("")
-        $("#web").text("")
-        $("#translation").text("")
-    };
-    function language(){
-        var current_value = $("#select").val()
-        switch(current_value)
-        {
-            case "chtoen":
-                from = "zh-CHS";
-                to = "EN";
-                break;
-            case "entoch":
-                from = "EN";
-                to = "zh-CHS";
-                break;
-            case "chtoja":
-                from = "zh-CHS";
-                to = "ja";
-                break;
-            case "chtoko":
-                from = "zh-CHS";
-                to = "ko";
-                break;
-            case "chtofr":
-                from = "zh-CHS";
-                to = "fr";
-                break;
-            case "chtode":
-                from = "zh-CHS";
-                to = "de";
-                break;
-            case "chtoru":
-                from = "zh-CHS";
-                to = "ru";
-                break;
-            case "chtoes":
-                from = "zh-CHS";
-                to = "es";
-                break;
-            case "chtopt":
-                from = "zh-CHS";
-                to = "pt";
-                break;
-            case "chtovi":
-                from = "zh-CHS";
-                to = "vi";
-                break;
-            case "chtoid":
-                from = "zh-CHS";
-                to = "id";
-                break;
-            case "chtoar":
-                from = "zh-CHS";
-                to = "ar";
-                break;
-            default:
-                from = "auto";
-                to = "zh-CHS";
-        }
-    }
-});
-</script>
-<!-- ########################################################## -->
-<!-- css -->
-<style type="text/css">
-/* menu */
-.menu{
-	position: absolute;
-	left: 0;
-	bottom: 0;
-    z-index: 3;
-	width: 140px;
-	height: 100%;
-	background-color: #eceff1;
-}
-.menu .brand{
-    margin-top: 17px;
-}
-.menu .brand img{
-    width: 40px;
-    margin-left: 47px;
-    border-radius: 5px;
-}
-.menu .brand .brandword{
-    margin-left: 30px;
-    font-size: 16px;
-    color: #212121;
-}
-.menu ul{
-    padding: 0%;
-    margin: 0%;
-    margin-top: 10px;
-}
-.menu ul a{
-    text-decoration: none;
-}
-.menu ul li{
-    margin-top: 0;
-    list-style: none;
-    padding: 4px 0;
-}
-.menu ul li span{
-    margin-left: 30px;
-    font-size: 14px;
-    color: #616161; 
-}
-.menu ul li:hover{
-    background-color: #ef5350;
-}
-.menu ul li:hover span{
-    color: #ffffff;
-}
-.menu hr{
-    margin: 20px 25px;
-    border: 0.5px solid #b0bec5;
-}
-.menu form{
-    position: fixed;
-    left: 26px;
-    bottom: 20px;
-    font-size: 16px;
-    color: #424242;
-}
-.menu .checkbox{
-    color: #666666;
-}
-/* content */
-.content{
-    margin-left: 140px;
-    padding: 7px;
-}
-.chooselang{
-    padding: 5px 0px;
-}
-.chooselang .select{
-    height: 26px;
-    outline: none;
-    border: none;
-}
-.input{
-    margin-top: 20px;
-}
-.input .query{
-    outline: none;
-    border: none;
-    width: 100%;
-    height: 80px;
-    font-size: 24px;
-    resize: none;
-    overflow:hidden;
-    background-color: #eceff1;
-}
-.decoratediv{
-    margin-top: 5px;
-}
-.decoratediv .decorate{
-    font-size: 14px;
-    color: #616161;  
-}
-.decoratediv .doc{
-    margin-right: 30px;
-}
-.decoratediv .querybtn{
-    float: right;
-    width: 72px;
-    height: 27px;
-    border: none;
-    outline: none;
-    border-radius: 2px;
-    color: #ffffff;
-    background-color: #f44336;
-}
-.decoratediv .querybtn:hover{
-    background: #e53935;
-}
-/* ############################################################ */
-html,body,.content,.translate{
-    height: 100%;
-}
-.translate{
-    display: none;
-    width: 100%;
-    margin-top: 30px;
-    overflow: auto;
-    height: 60%;
-}
-.translate::-webkit-scrollbar{
-    width: 0 !important 
-}
-.translate .tword{
-    font-size: 24px;
-    margin-right: 10px;
-}
-.translate .qword img{
-    width: 20px;
-    margin-left: 20px;
-}
-/* .translate span{
-    margin-right: 10px;
-} */
-.basetranslate ul,.phrase ul,.tense ul{
-    padding: 0%;
-    margin-top: 5px;
-}
-.basetranslate ul,.phrase ul,.tense ul{
-    list-style: none;
-}
-.voidspace{
-    margin: 0% 5px;
-}
-/* ############################################################## */
-/* hidden */
-/* .hidden{
-    display: none;
-} */
-.sentence{
-    position:absolute;
-    left: 155px;
-    bottom: 100px;
-    z-index: 2;
-    padding-right: 25px;
-    font-size: 14px;
-}
-.content .backgroundimg{
-    position: absolute;
-    /* left: 140px; */
-    right: 0px;
-    bottom: 0px;
-    z-index: 1;
-    width: 100%;
-}
-#translation{
-    /* display: hidden; */
-    font-size: 25px;
-    margin-top: 10px;
-}
-</style>
 </html>

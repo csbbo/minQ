@@ -1,0 +1,175 @@
+
+.menu{
+	position: absolute;
+	left: 0;
+	bottom: 0;
+    z-index: 3;
+	width: 140px;
+	height: 100%;
+	background-color: #eceff1;
+}
+.menu .brand{
+    margin-top: 17px;
+}
+.menu .brand img{
+    width: 40px;
+    margin-left: 47px;
+    border-radius: 5px;
+}
+.menu .brand .brandword{
+    margin-left: 30px;
+    font-size: 16px;
+    color: #212121;
+}
+.menu ul{
+    padding: 0%;
+    margin: 0%;
+    margin-top: 10px;
+}
+.menu ul a{
+    text-decoration: none;
+}
+.menu ul li{
+    margin-top: 0;
+    list-style: none;
+    padding: 4px 0;
+}
+.menu ul li span{
+    margin-left: 30px;
+    font-size: 14px;
+    color: #616161; 
+}
+.menu ul li:hover{
+    background-color: #ef5350;
+}
+.menu ul li:hover span{
+    color: #ffffff;
+}
+.menu hr{
+    margin: 20px 25px;
+    border: 0.5px solid #b0bec5;
+}
+.menu form{
+    position: fixed;
+    left: 26px;
+    bottom: 20px;
+    font-size: 16px;
+    color: #424242;
+}
+.menu .checkbox{
+    color: #666666;
+}
+/* content */
+.have{
+    color: #35a1d4;
+}
+.content{
+    margin-left: 140px;
+    padding: 7px;
+}
+.chooselang{
+    padding: 5px 0px;
+}
+.chooselang .select{
+    height: 26px;
+    outline: none;
+    border: none;
+}
+.input{
+    margin-top: 20px;
+}
+.input .query{
+    outline: none;
+    border: none;
+    width: 100%;
+    height: 80px;
+    font-size: 24px;
+    resize: none;
+    overflow:hidden;
+    background-color: #eceff1;
+}
+.decoratediv{
+    margin-top: 5px;
+}
+.decoratediv .decorate{
+    font-size: 14px;
+    color: #616161;  
+}
+.decoratediv .doc{
+    margin-right: 30px;
+}
+.decoratediv .querybtn{
+    float: right;
+    width: 72px;
+    height: 27px;
+    border: none;
+    outline: none;
+    border-radius: 2px;
+    color: #ffffff;
+    background-color: #f44336;
+}
+.decoratediv .querybtn:hover{
+    background: #e53935;
+}
+html,body,.content,.translate{
+    height: 100%;
+}
+.translate{
+    display: none;
+    width: 100%;
+    margin-top: 30px;
+    overflow: auto;
+    height: 60%;
+}
+.translate .volume{
+    color: #35a1d4;;
+}
+.translate::-webkit-scrollbar{
+    width: 0 !important 
+}
+.translate .tword{
+    font-size: 24px;
+    margin-right: 10px;
+}
+.translate .qword img{
+    width: 20px;
+    margin-left: 20px;
+}
+/* .translate span{
+    margin-right: 10px;
+} */
+.basetranslate ul,.phrase ul,.tense ul{
+    padding: 0%;
+    margin-top: 5px;
+}
+.basetranslate ul,.phrase ul,.tense ul{
+    list-style: none;
+}
+.voidspace{
+    margin: 0% 5px;
+}
+/* hidden */
+/* .hidden{
+    display: none;
+} */
+.sentence{
+    position:absolute;
+    left: 155px;
+    bottom: 100px;
+    z-index: 2;
+    padding-right: 25px;
+    font-size: 14px;
+}
+.content .backgroundimg{
+    position: absolute;
+    /* left: 140px; */
+    right: 0px;
+    bottom: 0px;
+    z-index: 1;
+    width: 100%;
+}
+#translation{
+    /* display: hidden; */
+    font-size: 25px;
+    margin-top: 10px;
+}
