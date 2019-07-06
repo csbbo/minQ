@@ -33,10 +33,10 @@ $(function(){
                     if($("#select").val() === "entoch"){
                         $("#qquery").text(data.query);
                         if(data.basic['us-phonetic']){
-                            $("#us-phonetic").text(data.basic["us-phonetic"]);
+                            $("#us-phonetic").text("美["+data.basic["us-phonetic"]+"]");
                         }
                         if(data.basic['uk-phonetic']){
-                            $("#uk-phonetic").text(data.basic["uk-phonetic"]);
+                            $("#uk-phonetic").text("英["+data.basic["uk-phonetic"]+"]");
                         }
                         if(data.basic.explains){
                             for (i=0;i<data.basic["explains"].length;i++){
@@ -47,20 +47,22 @@ $(function(){
                         }
                         if(data.basic.wfs)
                         {
+                            $("#wfs").append("[ ")
                             for (j=0;j<data.basic["wfs"].length;j++){
-                                $("#wfs").append("<li>")
                                 $("#wfs").append(data.basic["wfs"][j]["wf"]["name"])
                                 $("#wfs").append(" ")
                                 $("#wfs").append(data.basic["wfs"][j]["wf"]["value"])
-                                $("#wfs").append("</li>")
+                                $("#wfs").append(" ")
                             }
+                            $("#wfs").append("]")
                         }
                         if(data.web){
+                            $("#webtitle").text("网络释义")
                             for (k=0;k<data.web.length;k++){
                                 $("#web").append("<li>")
                                 $("#web").append(data.web[k]["key"])
                                 $("#web").append(" ")
-                                $("#web").append(data.web[k]["value"])
+                                $("#web").append(data.web[k]["value"]+" ")
                                 $("#web").append("</li>")
                             }
                         } 
@@ -94,6 +96,7 @@ $(function(){
         $("#explains").text("")
         $("#wfs").text("")
         $("#web").text("")
+        $("#webtitle").text("")
         $("#translation").text("")
     };
     function language(){
